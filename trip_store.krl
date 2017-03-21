@@ -13,6 +13,18 @@ ruleset trip_store {
     }
 
     empty_trips = { }
+
+    trips = function(){
+      ent:trips
+    }
+
+    long_trips = function(){
+      ent:long_trips
+    }
+
+    short_trips = function(){
+      ent:trips.difference(ent:long_trips)
+    }
   }
 
   
