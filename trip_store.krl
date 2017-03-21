@@ -15,21 +15,21 @@ ruleset trip_store {
     empty_trips = { }
 
     trips = function(){
-      ent:trips;
+      ent:trips
     }
 
     long_trips = function(){
-      ent:long_trips;
+      ent:long_trips
     }
 
     short_trips = function(){
-      ent:trips.difference(ent:long_trips);
+      ent:trips.difference(ent:long_trips)
     }
   }
 
   rule get_stuff {
     select when stuff here
-    trips();
+    trips()
   }
 
   
