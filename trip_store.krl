@@ -3,29 +3,33 @@ ruleset trip_store {
     name "Trip Store"
     author "Cameron Hymas"
     logging on
-    provides trips, long_trips, short_trips
-    shares __testing, trips, long_trips, short_trips
   }
   
   global {
     __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] },
                               { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage" ] },
-                              { "domain": "car", "type" : "reset" } ] 
+                              { "domain": "car", "type": "reset" },
+                              { "domain": "stuff", "type": "here" } ] 
     }
 
     empty_trips = { }
 
     trips = function(){
-      ent:trips
+      ent:trips;
     }
 
     long_trips = function(){
-      ent:long_trips
+      ent:long_trips;
     }
 
     short_trips = function(){
-      ent:trips.difference(ent:long_trips)
+      ent:trips.difference(ent:long_trips);
     }
+  }
+
+  rule get_stuff {
+    select when stuff here
+    trips();
   }
 
   
