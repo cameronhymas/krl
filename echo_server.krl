@@ -1,6 +1,6 @@
-ruleset hello_world {
+ruleset echo_server {
   meta {
-    name "Hello World"
+    name "Echo Server"
     description <<
 A first ruleset for the Quickstart
 >>
