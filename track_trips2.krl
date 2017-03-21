@@ -26,9 +26,10 @@ ruleset track_trips2 {
     pre {
       long_trip = 200
     }
-    always{
+    fired{
       raise explicit event "found_long_trip"
-      if(mileage.as("Number") > long_trip)
+      if(mileage > long_trip)
+        
     }
   }
 }
