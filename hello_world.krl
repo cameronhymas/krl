@@ -19,15 +19,14 @@ A first ruleset for the Quickstart
               { "domain": "hello", "type": "name", "attrs": [ "name" ] } ]
             }
   }
-  
   rule hello_world {
     select when echo hello
-    pre {
-      name = event:attr("name").klog("our passed in name: ")
+    pre{
+      name = event:attr("name").defaultsTo(ent:name,"use stored name")
     }
     send_directive("say") with
       something = "Hello " + name
-  }  
+  }
   rule store_name {
     select when hello name
     pre{
