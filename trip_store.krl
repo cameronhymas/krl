@@ -14,7 +14,7 @@ ruleset trip_store {
     }
 
     clear_name = { "_0": { "name": { "first": "GlaDOS", "last": "" } } }
-    trips = { }
+    empty_trips = { }
   }
 
   rule hello_world {
@@ -57,22 +57,19 @@ ruleset trip_store {
 
 
 
-
-
-
-
   
   rule collect_trips {
     select when explicit trip_processed 
     pre {
-      passed_mileage = event:attr("mileage").klog("our passed in mileage: ")
       time = time:now()
+      passed_mileage = event:attr("mileage").klog("our passed in mileage: ")
     }
     send_directive("collect_trips") with
-      mileage = passed_mileage
       timestamp = time
+      mileage = passed_mileage
     always{
-      ent:trips{[timestamp, "trip_processed", "mileage"]}
+      ent:trips := ent:trips.defaultsTo(empty_trips, "initializing");
+      ent:trips{[timestamp, "mileage"]} := mileage
     }
   }
 }
