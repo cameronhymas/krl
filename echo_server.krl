@@ -15,12 +15,12 @@ A first ruleset for the Quickstart
     }
   }
   
-  rule hello_world {
+  rule hello {
     select when echo hello
     send_directive("say") with
     something = "Hello World"
   }
-  rule echo is active {
+  rule message is active {
     select when echo message input re#(.*)# setting(m);
     send_directive("say") with
     something = m
