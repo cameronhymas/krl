@@ -1,10 +1,7 @@
 ruleset echo_server {
   meta {
     name "Echo Server"
-    description <<
-A first ruleset for the Quickstart
->>
-    author "Phil Windley"
+    author "Cameron Hymas"
     logging on
     shares __testing
   }
