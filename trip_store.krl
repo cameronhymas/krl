@@ -69,7 +69,7 @@ ruleset trip_store {
       mileage = passed_mileage
     always{
       ent:trips := ent:trips.defaultsTo(empty_trips, "initializing");
-      ent:trips{[timestamp, "mileage"]} := mileage
+      ent:trips{[time, "mileage"]} := mileage
     }
   }
 }
