@@ -9,7 +9,8 @@ ruleset trip_store {
   global {
     __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] },
                               { "domain": "hello", "type": "name", "attrs": [ "id", "first_name", "last_name" ] },
-                              { "domain": "hello", "type" : "clear" } ] 
+                              { "domain": "hello", "type" : "clear" },
+                              { "domain": "echo", "type": "hello", "attrs": [ "id" ] } ] 
     }
 
     clear_name = { "_0": { "name": { "first": "GlaDOS", "last": "" } } }
