@@ -12,22 +12,22 @@ ruleset track_trips2 {
     }
   }
   
-  rule process_trip is active {
+  rule process_trip {
     select when car new_trip mileage re#(.*)# setting(mileage);
     send_directive("trip") with
     trip_length = mileage
     always {
-      raise explicit event trip_processed attributes event:attrs()
+      raise explicit event "trip_processed" attributes event:attrs()
     }
   }
 
-  rule find_long_trips is active {
+  rule find_long_trips {
     select when explicit trip_processed mileage re#(.*)# setting(mileage);
     pre {
       long_trip = 200
     }
     always{
-      raise explicit event found_long_trip
+      raise explicit event "found_long_trip"
       if(mileage.as("Number") > long_trip)
     }
   }
