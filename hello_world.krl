@@ -16,8 +16,7 @@ A first ruleset for the Quickstart
     }
     __testing = { "queries": [ { "name": "hello", "args": [ "obj" ] },
                                { "name": "__testing" } ],
-              "events": [ { "domain": "echo", "type": "hello",
-                            "attrs": [ "name" ] },
+              "events": [ { "domain": "echo", "type": "hello", "attrs": [ "id" ] },
                           { "domain": "hello", "type": "name", "attrs": [ "name" ] },
                           { "domain": "hello", "type" : "clear" } ]
     }
@@ -28,7 +27,10 @@ A first ruleset for the Quickstart
   rule hello_world {
     select when echo hello
     pre {
-      name = event:attr("name").defaultsTo(ent:name, "use stored name")
+      id = event:attr("id").defaultsTo("_0")
+      first = ent:name{[id,"name","first"]}
+      last = ent:name{[id,"name","last"]}
+      name = first + " " + last
     }
     send_directive("say") with
       something = "Hello " + name
