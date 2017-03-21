@@ -15,5 +15,8 @@ ruleset track_trips2 {
     select when car new_trip mileage re#(.*)# setting(mileage);
     send_directive("trip") with
     trip_length = mileage
+    always {
+      raise explicit event trip_processed attributes event:attrs()
+    }
   }
 }
