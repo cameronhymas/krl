@@ -6,19 +6,23 @@ A first ruleset for the Quickstart
 >>
     author "Phil Windley"
     logging on
-    shares hello
+    shares __testing
   }
   
   global {
-    hello = function(obj) {
-      msg = "Hello " + obj;
-      msg
+    __testing = { "events": [ { "domain": "echo", "type": "hello" },
+                              { "domain": "echo", "type": "message", "attrs": [ "input" ] } ] 
     }
   }
   
   rule hello_world {
     select when echo hello
     send_directive("say") with
-      something = "Hello World"
-  }  
+    something = "Hello World"
+  }
+  rule echo is active {
+    select when echo message input re#(.*)# setting(m);
+    send_directive("say") with
+    something = m
+  }
 }
