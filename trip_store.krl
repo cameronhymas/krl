@@ -8,54 +8,21 @@ ruleset trip_store {
   
   global {
     __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] },
-                              { "domain": "hello", "type": "name", "attrs": [ "id", "first_name", "last_name" ] },
-                              { "domain": "hello", "type" : "clear" },
-                              { "domain": "echo", "type": "hello", "attrs": [ "id" ] } ] 
+                              { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage" ] },
+                              { "domain": "explicit", "type" : "clear" } ] 
     }
 
-    clear_name = { "_0": { "name": { "first": "GlaDOS", "last": "" } } }
     empty_trips = { }
   }
 
-  rule hello_world {
-    select when echo hello
-    pre{      
-      id = event:attr("id").defaultsTo("_0")
-      first = ent:name{[id,"name","first"]}
-      last = ent:name{[id,"name","last"]}
-      name = first + " " + last
-    }
-    send_directive("say") with
-      something = "Hello " + name
-  }
 
-
-  rule clear_names {
-    select when hello clear
+  rule clear_trips {
+    select when explicit clear
     always {
-      ent:name := clear_name
+      ent:trips := empty_trips;
+      ent:long_trips := empty_trips
     }
   }
-
-  rule store_name {
-    select when hello name
-    pre{
-      passed_id = event:attr("id").klog("our passed in id: ")
-      passed_first_name = event:attr("first_name").klog("our passed in first_name: ")
-      passed_last_name = event:attr("last_name").klog("our passed in last_name: ")
-    }
-    send_directive("store_name") with
-      id = passed_id
-      first_name = passed_first_name
-      last_name = passed_last_name
-    always{
-      ent:name := ent:name.defaultsTo(clear_name,"initialization was needed");
-      ent:name{[passed_id,"name","first"]} := passed_first_name;
-      ent:name{[passed_id,"name","last"]} := passed_last_name
-    }
-  }
-
-
 
   
   rule collect_trips {
@@ -70,6 +37,22 @@ ruleset trip_store {
     always{
       ent:trips := ent:trips.defaultsTo(empty_trips, "initializing");
       ent:trips{[time, "mileage"]} := passed_mileage
+    }
+  }
+
+
+  rule collect_long_trips {
+    select when explicit found_long_trip 
+    pre {
+      time = time:now()
+      passed_mileage = event:attr("mileage").klog("our passed in mileage: ")
+    }
+    send_directive("collect_long_trips") with
+      timestamp = time
+      mileage = passed_mileage
+    always{
+      ent:long_trips := ent:long_trips.defaultsTo(empty_trips, "initializing");
+      ent:long_trips{[time, "mileage"]} := passed_mileage
     }
   }
 }
