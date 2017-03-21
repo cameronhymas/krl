@@ -9,30 +9,13 @@ ruleset trip_store {
   global {
     __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] },
                               { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage" ] },
-                              { "domain": "car", "type": "reset" },
-                              { "domain": "stuff", "type": "here" } ] 
+                              { "domain": "car", "type": "reset" } ] 
     }
 
     empty_trips = { }
 
-    trips = function(){
-      ent:trips
-    }
 
-    long_trips = function(){
-      ent:long_trips
-    }
-
-    short_trips = function(){
-      ent:trips.difference(ent:long_trips)
-    }
   }
-
-  rule get_stuff {
-    select when stuff here
-    trips()
-  }
-
   
   rule collect_trips {
     select when explicit trip_processed 
