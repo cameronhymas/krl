@@ -9,19 +9,10 @@ ruleset trip_store {
   global {
     __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] },
                               { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage" ] },
-                              { "domain": "explicit", "type" : "clear" } ] 
+                              { "domain": "car", "type" : "reset" } ] 
     }
 
     empty_trips = { }
-  }
-
-
-  rule clear_trips {
-    select when explicit clear
-    always {
-      ent:trips := empty_trips;
-      ent:long_trips := empty_trips
-    }
   }
 
   
@@ -53,6 +44,15 @@ ruleset trip_store {
     always{
       ent:long_trips := ent:long_trips.defaultsTo(empty_trips, "initializing");
       ent:long_trips{[time, "mileage"]} := passed_mileage
+    }
+  }
+
+
+  rule clear_trips {
+    select when car trip_reset
+    always {
+      ent:trips := empty_trips;
+      ent:long_trips := empty_trips
     }
   }
 }
