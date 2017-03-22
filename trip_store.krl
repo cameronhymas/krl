@@ -3,7 +3,8 @@ ruleset trip_store {
     name "Trip Store"
     author "Cameron Hymas"
     logging on
-    shares __testing
+    provides trip, long_trips, short_trips
+    shares on
   }
   
   global {
