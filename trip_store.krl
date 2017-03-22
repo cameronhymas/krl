@@ -22,7 +22,7 @@ ruleset trip_store {
     }
 
     short_trips = function() {
-      ent:all_trips.map(function(k, v){v < long_trip})
+      ent:all_trips.map(function(k, v){v < long_trip.klog("long trip value")})
     }
 
     empty_trips = { }
