@@ -9,8 +9,8 @@ ruleset trip_store {
   }
   
   global {
-    __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage", "timestamp" ] },
-                              { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage", "timestamp" ] },
+    __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] },
+                              { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage" ] },
                               { "domain": "car", "type" : "reset" } ] 
     }
 
@@ -42,7 +42,7 @@ ruleset trip_store {
   rule collect_trips {
     select when explicit trip_processed 
     pre {
-      time = event:attr("timestamp").klog("our passed in timestamp: ")
+      time = time:now()
       passed_mileage = event:attr("mileage").klog("our passed in mileage: ")
     }
     send_directive("collect_trips") with
@@ -58,7 +58,7 @@ ruleset trip_store {
   rule collect_long_trips {
     select when explicit found_long_trip 
     pre {
-      time = event:attr("timestamp").klog("our passed in timestamp: ")
+      time = time:now()
       passed_mileage = event:attr("mileage").klog("our passed in mileage: ")
     }
     send_directive("collect_long_trips") with
