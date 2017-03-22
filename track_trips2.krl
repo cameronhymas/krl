@@ -3,6 +3,7 @@ ruleset track_trips2 {
     name "Track Trips2"
     author "Cameron Hymas"
     logging on
+    provides long_trip
     shares __testing, long_trip
   }
   
