@@ -3,6 +3,7 @@ ruleset trip_store {
     name "Trip Store"
     author "Cameron Hymas"
     logging on
+    use module track_trips2
     provides trip, long_trips, short_trips
     shares __testing, trips, long_trips, short_trips
   }
