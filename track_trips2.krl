@@ -17,10 +17,16 @@ ruleset track_trips2 {
   
   rule process_trip {
     select when car new_trip mileage re#(.*)# setting(mileage);
+    pre {
+      time = time:now()
+    }
     send_directive("trip") with
     trip_length = mileage
+    timestamp = time
     always {
-      raise explicit event "trip_processed" attributes event:attrs()
+      raise explicit event "trip_processed" 
+      with mileage = mileage
+      timestamp = time
     }
   }
 
