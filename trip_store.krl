@@ -9,7 +9,7 @@ ruleset trip_store {
   global {
     __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] },
                               { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage" ] },
-                              { "domain": "explicit", "type" : "clear" } ] 
+                              { "domain": "car", "type" : "reset" } ] 
     }
 
     trips = function(){
@@ -29,7 +29,7 @@ ruleset trip_store {
 
 
   rule clear_trips {
-    select when explicit clear
+    select when car reset
     always {
       ent:all_trips := empty_trips;
       ent:only_long_trips := empty_trips

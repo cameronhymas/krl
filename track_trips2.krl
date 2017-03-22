@@ -28,6 +28,7 @@ ruleset track_trips2 {
     }
     fired{
       raise explicit event "found_long_trip"
+      with mileage = mileage
       if(mileage > long_trip)        
     }
   }
