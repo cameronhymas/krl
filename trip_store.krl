@@ -4,7 +4,7 @@ ruleset trip_store {
     author "Cameron Hymas"
     logging on
     provides trip, long_trips, short_trips
-    shares on
+    sharing on
   }
   
   global {
