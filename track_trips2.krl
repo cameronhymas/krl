@@ -3,13 +3,15 @@ ruleset track_trips2 {
     name "Track Trips2"
     author "Cameron Hymas"
     logging on
-    shares __testing
+    shares __testing, long_trip
   }
   
   global {
     __testing = { "events": [ { "domain": "car", "type": "new_trip", "attrs": [ "mileage" ] },
                               { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] } ] 
     }
+
+    long_trip = 200
   }
   
   rule process_trip {
@@ -23,9 +25,6 @@ ruleset track_trips2 {
 
   rule find_long_trips {
     select when explicit trip_processed mileage re#(.*)# setting(mileage);
-    pre {
-      long_trip = 200
-    }
     fired{
       raise explicit event "found_long_trip"
       with mileage = mileage

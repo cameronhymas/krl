@@ -4,7 +4,7 @@ ruleset trip_store {
     author "Cameron Hymas"
     logging on
     provides trip, long_trips, short_trips
-    shares __testing, trip, long_trips, short_trips
+    shares __testing, trips, long_trips, short_trips
   }
   
   global {
@@ -22,7 +22,7 @@ ruleset trip_store {
     }
 
     short_trips = function() {
-      ent:all_trips.difference(ent:all_long_trips)
+      ent:all_trips.map(function(k, v){v < long_trip})
     }
 
     empty_trips = { }
