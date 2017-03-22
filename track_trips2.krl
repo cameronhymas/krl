@@ -38,6 +38,7 @@ ruleset track_trips2 {
     fired{
       raise explicit event "found_long_trip"
       with mileage = mileage
+      timestamp = time
       if(mileage > long_trip)        
     }
   }
