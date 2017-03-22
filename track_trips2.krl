@@ -33,7 +33,7 @@ ruleset track_trips2 {
   rule find_long_trips {
     select when explicit trip_processed mileage re#(.*)# setting(mileage);
     pre {
-      time = event:attr("timestamp").klog("our passed in timestamp - find_long_trips: ")
+      time = event:attr("timestamp")
     }
     fired{
       raise explicit event "found_long_trip"

@@ -23,7 +23,7 @@ ruleset trip_store {
     }
 
     short_trips = function() {
-      ent:all_trips.filter(function(v, k){v.mileage.klog("stuff: ") < track_trips2:long_trip.klog("long trip value")})
+      ent:all_trips.filter(function(v, k){v.mileage < track_trips2:long_trip})
     }
 
     empty_trips = { }
@@ -42,8 +42,8 @@ ruleset trip_store {
   rule collect_trips {
     select when explicit trip_processed 
     pre {
-      time = event:attr("timestamp").klog("our passed in timestamp - collect_trips: ")
-      passed_mileage = event:attr("mileage").klog("our passed in mileage: ")
+      time = event:attr("timestamp")
+      passed_mileage = event:attr("mileage")
     }
     send_directive("collect_trips") with
       timestamp = time
@@ -58,8 +58,8 @@ ruleset trip_store {
   rule collect_long_trips {
     select when explicit found_long_trip 
     pre {
-      time = event:attr("timestamp").klog("our passed in timestamp - collect_long_trips: ")
-      passed_mileage = event:attr("mileage").klog("our passed in mileage: ")
+      time = event:attr("timestamp")
+      passed_mileage = event:attr("mileage")
     }
     send_directive("collect_long_trips") with
       timestamp = time
