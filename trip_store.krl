@@ -12,6 +12,18 @@ ruleset trip_store {
                               { "domain": "explicit", "type" : "clear" } ] 
     }
 
+    trips = function(){
+      ent:all_trips
+    }
+
+    long_trips = function(){
+      ent:only_long_trips
+    }
+
+    short_trips = function() {
+      ent:all_trips.difference(ent:all_long_trips)
+    }
+
     empty_trips = { }
   }
 
@@ -19,8 +31,8 @@ ruleset trip_store {
   rule clear_trips {
     select when explicit clear
     always {
-      ent:trips := empty_trips;
-      ent:long_trips := empty_trips
+      ent:all_trips := empty_trips;
+      ent:only_long_trips := empty_trips
     }
   }
 
@@ -35,8 +47,8 @@ ruleset trip_store {
       timestamp = time
       mileage = passed_mileage
     always{
-      ent:trips := ent:trips.defaultsTo(empty_trips, "initializing");
-      ent:trips{[time, "mileage"]} := passed_mileage
+      ent:all_trips := ent:all_trips.defaultsTo(empty_trips, "initializing");
+      ent:all_trips{[time, "mileage"]} := passed_mileage
     }
   }
 
@@ -51,8 +63,8 @@ ruleset trip_store {
       timestamp = time
       mileage = passed_mileage
     always{
-      ent:long_trips := ent:long_trips.defaultsTo(empty_trips, "initializing");
-      ent:long_trips{[time, "mileage"]} := passed_mileage
+      ent:only_long_trips := ent:only_long_trips.defaultsTo(empty_trips, "initializing");
+      ent:only_long_trips{[time, "mileage"]} := passed_mileage
     }
   }
 }
