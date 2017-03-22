@@ -10,7 +10,7 @@ ruleset trip_store {
   
   global {
     __testing = { "events": [ { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage", "timestamp" ] },
-                              { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage" ] },
+                              { "domain": "explicit", "type": "found_long_trip", "attrs": [ "mileage", "timestamp" ] },
                               { "domain": "car", "type" : "reset" } ] 
     }
 
