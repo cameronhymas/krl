@@ -42,7 +42,7 @@ ruleset trip_store {
   rule collect_trips {
     select when explicit trip_processed 
     pre {
-      time = time:now()
+      time = time:now().klog("generated timestamp - collect_trips: ")
       passed_mileage = event:attr("mileage").klog("our passed in mileage: ")
     }
     send_directive("collect_trips") with

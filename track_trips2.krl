@@ -9,7 +9,7 @@ ruleset track_trips2 {
   
   global {
     __testing = { "events": [ { "domain": "car", "type": "new_trip", "attrs": [ "mileage" ] },
-                              { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage" ] } ] 
+                              { "domain": "explicit", "type": "trip_processed", "attrs": [ "mileage", "timestamp" ] } ] 
     }
 
     long_trip = 200
@@ -26,6 +26,9 @@ ruleset track_trips2 {
 
   rule find_long_trips {
     select when explicit trip_processed mileage re#(.*)# setting(mileage);
+    pre {
+      time = event:attr("timestamp").klog("our passed in timestamp - find_long_trips: ")
+    }
     fired{
       raise explicit event "found_long_trip"
       with mileage = mileage
