@@ -69,7 +69,10 @@ ruleset app_section_collection {
     }
     if section_id.klog("found section_id")
     then
-      noop()
+      event:send(
+      { "eci": the_section.eci, "eid": "install-ruleset",
+        "domain": "pico", "type": "new_ruleset",
+        "attrs": { "base": meta:rulesetURI, "url": "app_section.krl", "section_id": section_id } } )
     fired {
       ent:sections := ent:sections.defaultsTo({});
       ent:sections{[section_id]} := the_section
