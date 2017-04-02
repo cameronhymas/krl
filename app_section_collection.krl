@@ -33,6 +33,17 @@ ruleset app_section_collection {
           with section_id = section_id
   }
 
+  rule section_already_exists {
+    select when section needed
+    pre {
+      section_id = event:attr("section_id")
+      exists = ent:sections >< section_id
+    }
+    if exists then
+      send_directive("section_ready")
+        with section_id = section_id
+  }
+
   rule section_needed {
     select when section needed
     pre {
@@ -44,9 +55,9 @@ ruleset app_section_collection {
       noop()
     fired {
       raise pico event "new_child_request"
-      attributes { "dname": nameFromID(section_id),
-            "color": "#FF69B4",
-            "section_id": section_id }
+        attributes { "dname": nameFromID(section_id),
+                     "color": "#FF69B4",
+                     "section_id": section_id }
     }
   }
 
