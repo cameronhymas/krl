@@ -80,8 +80,8 @@ ruleset manage_fleet {
         "attrs": { "base": meta:rulesetURI, "url": "vehicle.krl", "name": name } } )
 
     fired {
-      raise car event "subscribe_vehicle"
-        with vehicle = the_vehicle;
+      //raise car event "subscribe_vehicle"
+      //  with vehicle = the_vehicle;
 
       ent:vehicles := ent:vehicles.defaultsTo({});
       ent:vehicles{[name]} := the_vehicle
@@ -101,13 +101,23 @@ ruleset manage_fleet {
       send_directive("subscribe time")
         with vehicle = vehicle;
 
-      raise wrangler event "subscription"
-      with name = name
-           name_space = "car"
-           my_role = "fleet"
-           subscriber_role = "vehicle"
-           channel_type = "subscription"
-           subscriber_eci = the_vehicle.eci
+      event:send(
+      { "eci": fleet, "eid": "subscription",
+        "domain": "wrangler", "type": "subscription",
+        "attrs": { "name": "Suck It",
+                   "name_space": "car",
+                   "my_role": "fleet",
+                   "subscriber_role": "vehicle",
+                   "channel_type": "subscription",
+                   "subscriber_eci": vehicle.eci } } )
+
+      //raise wrangler event "subscription"
+      //with name = name
+      //     name_space = "car"
+      //     my_role = "fleet"
+      //     subscriber_role = "vehicle"
+      //     channel_type = "subscription"
+      //     subscriber_eci = the_vehicle.eci
     }
   }
 
