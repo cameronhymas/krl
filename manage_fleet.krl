@@ -85,8 +85,8 @@ ruleset manage_fleet {
         "attrs": { "base": meta:rulesetURI, "url": "vehicle.krl", "name": name } } )
 
     fired {
-      //raise car event "subscribe_vehicle"
-      //  with vehicle = the_vehicle;
+      raise car event "subscribe_vehicle"
+        with vehicle = the_vehicle;
 
       ent:vehicles := ent:vehicles.defaultsTo({});
       ent:vehicles{[name]} := the_vehicle
@@ -100,22 +100,18 @@ ruleset manage_fleet {
       vehicle = event:attr("vehicle").klog("Vehicle: ")
     }
 
-    noop()
-
-    fired {
-      send_directive("subscribe time")
+    send_directive("subscribe time")
         with vehicle = vehicle;
 
-      event:send(
-      { "eci": meta:eci, "eid": "subscription",
-        "domain": "wrangler", "type": "subscription",
-        "attrs": { "name": "Suck It",
-                   "name_space": "car",
-                   "my_role": "fleet",
-                   "subscriber_role": "vehicle",
-                   "channel_type": "subscription",
-                   "subscriber_eci": vehicle.eci } } ).klog("subscription maybe: ")
-    }
+    event:send(
+    { "eci": meta:eci, "eid": "subscription",
+      "domain": "wrangler", "type": "subscription",
+      "attrs": { "name": "Suck It",
+                 "name_space": "car",
+                 "my_role": "fleet",
+                 "subscriber_role": "vehicle",
+                 "channel_type": "subscription",
+                 "subscriber_eci": vehicle.eci } } ).klog("subscription maybe: ")
   }
 
   rule delete_vehicle {
