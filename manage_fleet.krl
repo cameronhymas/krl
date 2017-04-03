@@ -5,6 +5,7 @@ ruleset manage_fleet {
     use module io.picolabs.pico alias wrangler
     logging on
     shares __testing
+    use module Subscriptions
   }
 
   global {
@@ -48,14 +49,14 @@ ruleset manage_fleet {
       the_vehicle = event:attr("new_child")
       name = event:attr("rs_attrs"){"name"}
     }
-    if name.klog("found name: ")
+    if not name.klog("found name: ")
     then
       send_directive("register child rulesets")
         with name = name 
         vehicle = the_vehicle
 
       event:send(
-     { "eci": the_vehicle.eci, "eid": "install-ruleset",
+      { "eci": the_vehicle.eci, "eid": "install-ruleset",
        "domain": "pico", "type": "new_ruleset",
        "attrs": { "rid": "Subscriptions", "name": name } } )
 
@@ -69,7 +70,20 @@ ruleset manage_fleet {
         "domain": "pico", "type": "new_ruleset",
         "attrs": { "base": meta:rulesetURI, "url": "track_trips2.krl", "name": name } } )
 
+      event:send(
+      { "eci": the_vehicle.eci, "eid": "install-ruleset",
+        "domain": "pico", "type": "new_ruleset",
+        "attrs": { "base": meta:rulesetURI, "url": "vehicle.krl", "name": name } } )
+
     fired {
+      raise wrangler event "subscription"
+      with name = name
+           name_space = "car"
+           my_role = "fleet"
+           subscriber_role = "vehicle"
+           channel_type = "subscription"
+           subscriber_eci = the_vehicle.eci;
+
       ent:vehicles := ent:vehicles.defaultsTo({});
       ent:vehicles{[name]} := the_vehicle
     }
