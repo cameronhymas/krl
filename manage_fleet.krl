@@ -4,7 +4,8 @@ ruleset manage_fleet {
     author "Cameron Hymas"
     use module io.picolabs.pico alias wrangler
     logging on
-    shares __testing
+    shares __testing, getVehicles
+    provides getVehicles
     use module Subscriptions
   }
 
@@ -15,6 +16,11 @@ ruleset manage_fleet {
 
     nameFromName = function(name) {
       "Vehicle -  " + name + " Pico"
+    }
+
+    getVehicles = function() {
+      // return vehicle subscriptions
+      Subscriptions:getSubscriptions()
     }
   }
 
@@ -51,14 +57,6 @@ ruleset manage_fleet {
     }
     if name.klog("found name: ")
     then
-      send_directive("register child rulesets")
-        with name = name 
-        vehicle = the_vehicle
-
-      send_directive("register child rulesets")
-        with name = name 
-        vehicle = the_vehicle
-
       event:send(
       { "eci": the_vehicle.eci, "eid": "install-ruleset",
        "domain": "pico", "type": "new_ruleset",
@@ -110,14 +108,6 @@ ruleset manage_fleet {
                    "subscriber_role": "vehicle",
                    "channel_type": "subscription",
                    "subscriber_eci": vehicle.eci } } ).klog("subscription maybe: ")
-
-      //raise wrangler event "subscription"
-      //with name = name
-      //     name_space = "car"
-      //     my_role = "fleet"
-      //     subscriber_role = "vehicle"
-      //     channel_type = "subscription"
-      //     subscriber_eci = the_vehicle.eci
     }
   }
 
