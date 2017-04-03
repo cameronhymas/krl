@@ -76,13 +76,8 @@ ruleset manage_fleet {
         "attrs": { "base": meta:rulesetURI, "url": "vehicle.krl", "name": name } } )
 
     fired {
-      raise wrangler event "subscription"
-      with name = name
-           name_space = "car"
-           my_role = "fleet"
-           subscriber_role = "vehicle"
-           channel_type = "subscription"
-           subscriber_eci = the_vehicle.eci;
+      raise car event "subscribe_vehicle"
+        with vehicle = the_vehicle;
 
       ent:vehicles := ent:vehicles.defaultsTo({});
       ent:vehicles{[name]} := the_vehicle
