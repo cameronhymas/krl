@@ -12,7 +12,8 @@ ruleset manage_fleet {
   global {
     __testing = { "queries": [ { "name": "__testing" } ],
                   "events": [ { "domain": "car", "type": "new_vehicle", "attrs": [ "name" ] },
-                              { "domain": "collection", "type": "empty" } ] }
+                              { "domain": "collection", "type": "empty" },
+                              { "domain": "car", "type": "get_vehicles" } ] }
 
     nameFromName = function(name) {
       "Vehicle -  " + name + " Pico"
@@ -22,6 +23,12 @@ ruleset manage_fleet {
       // return vehicle subscriptions
       Subscriptions:getSubscriptions()
     }
+  }
+
+  rule get_vehicles {
+    select when car get_vehicles
+
+    getVehicles()
   }
 
 
