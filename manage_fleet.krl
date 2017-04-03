@@ -85,8 +85,8 @@ ruleset manage_fleet {
         "attrs": { "base": meta:rulesetURI, "url": "vehicle.krl", "name": name } } )
 
     fired {
-      raise car event "subscribe_vehicle"
-        with vehicle = the_vehicle;
+      //raise car event "subscribe_vehicle"
+      //  with vehicle = the_vehicle;
 
       ent:vehicles := ent:vehicles.defaultsTo({});
       ent:vehicles{[name]} := the_vehicle
@@ -137,7 +137,7 @@ ruleset manage_fleet {
       raise pico event "delete_child_request"
         attributes child_to_delete;
       ent:sections{[name]} := null
-      
+
       // delete subscription
     }
   }
