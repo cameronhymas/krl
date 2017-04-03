@@ -70,8 +70,8 @@ ruleset manage_fleet {
         "attrs": { "base": meta:rulesetURI, "url": "track_trips2.krl", "name": name } } )
 
     fired {
-      ent:sections := ent:sections.defaultsTo({});
-      ent:sections{[section_id]} := the_section
+      ent:vehicles := ent:vehicles.defaultsTo({});
+      ent:vehicles{[name]} := the_vehicle
     }
   }
 
@@ -79,7 +79,7 @@ ruleset manage_fleet {
   rule collection_empty {
     select when collection empty
     always {
-      ent:sections := {}
+      ent:vehicles := {}
     }
   }
 
