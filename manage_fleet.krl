@@ -49,7 +49,7 @@ ruleset manage_fleet {
       the_vehicle = event:attr("new_child")
       name = event:attr("rs_attrs"){"name"}
     }
-    if not name.klog("found name: ")
+    if name.klog("found name: ")
     then
       send_directive("register child rulesets")
         with name = name 
