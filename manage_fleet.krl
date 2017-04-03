@@ -101,7 +101,7 @@ ruleset manage_fleet {
     }
 
     send_directive("subscribe time")
-        with vehicle = vehicle;
+        with vehicle = vehicle
 
     event:send(
     { "eci": meta:eci, "eid": "subscription",
@@ -111,7 +111,7 @@ ruleset manage_fleet {
                  "my_role": "fleet",
                  "subscriber_role": "vehicle",
                  "channel_type": "subscription",
-                 "subscriber_eci": vehicle.eci } } ).klog("subscription maybe: ")
+                 "subscriber_eci": vehicle.eci } } )
   }
 
   rule delete_vehicle {
