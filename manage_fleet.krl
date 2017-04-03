@@ -55,6 +55,10 @@ ruleset manage_fleet {
         with name = name 
         vehicle = the_vehicle
 
+      send_directive("register child rulesets")
+        with name = name 
+        vehicle = the_vehicle
+
       event:send(
       { "eci": the_vehicle.eci, "eid": "install-ruleset",
        "domain": "pico", "type": "new_ruleset",
@@ -88,7 +92,7 @@ ruleset manage_fleet {
   rule subscribe_vehicle {
     select when car subscribe_vehicle
     pre {
-      vehicle = event:attr("vehicle")
+      vehicle = event:attr("vehicle").klog("Vehicle: ")
     }
 
     noop()
