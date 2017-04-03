@@ -118,6 +118,30 @@ ruleset manage_fleet {
     }
   }
 
+  rule delete_vehicle {
+    select when car unneeded_vehicle
+
+    pre {
+      name = event:attrs("name")
+      exists = ent:vehicles >< name
+      eci = meta:eci
+      child_to_delete = childFromName(name)
+    }
+
+    if exists then
+    send_directive("vehicle_deleted")
+      with name = name
+
+    fired {
+      // remove pico
+      raise pico event "delete_child_request"
+        attributes child_to_delete;
+      ent:sections{[name]} := null
+      
+      // delete subscription
+    }
+  }
+
 
   rule collection_empty {
     select when collection empty
