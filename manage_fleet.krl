@@ -90,14 +90,35 @@ ruleset manage_fleet {
   }
 
 
+  rule subscribe_vehicle {
+    select when car subscribe_vehicle
+    pre {
+      vehicle = event:attr("vehicle")
+    }
+
+    noop()
+
+    fired {
+      send_directive("subscribe time")
+        with vehicle = vehicle;
+
+      raise wrangler event "subscription"
+      with name = name
+           name_space = "car"
+           my_role = "fleet"
+           subscriber_role = "vehicle"
+           channel_type = "subscription"
+           subscriber_eci = the_vehicle.eci
+    }
+  }
+
+
   rule collection_empty {
     select when collection empty
     always {
       ent:vehicles := {}
     }
   }
-
-
 }
 
 
