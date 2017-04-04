@@ -10,7 +10,8 @@ ruleset app_section_collection {
 
   global {
     __testing = { "events": [ { "domain": "section", "type": "needed", "attrs": [ "section_id" ] },
-                              { "domain": "collection", "type": "empty" } ],
+                              { "domain": "collection", "type": "empty" },
+                              { "domain": "section", "type": "get_section", "attrs": [ "section_id" ] } ],
                  "queries": [ { "name": "showChildren" } ] }
 
     nameFromID = function(section_id) {
@@ -21,6 +22,19 @@ ruleset app_section_collection {
       wrangler:children()
     }
   }
+
+  rule get_vehicle {
+    select when section get_section
+
+    pre {
+      section_id = event:attr("section_id")
+      exists = ent:sections >< section_id
+    }
+
+    if exists then noop()
+  }
+
+
 
   rule section_already_exists {
     select when section needed
