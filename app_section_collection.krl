@@ -71,7 +71,7 @@ ruleset app_section_collection {
   rule pico_child_initialized {
     select when pico child_initialized
     pre {
-      the_section = event:attr("new_child")
+      the_section = event:attr("new_child").klog("child")
       section_id = event:attr("rs_attrs"){"section_id"}
     }
     if section_id.klog("found section_id")
