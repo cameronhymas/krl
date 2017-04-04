@@ -39,7 +39,8 @@ ruleset manage_fleet {
       exists = ent:vehicles >< name.klog("exists")
     }
 
-    getVehicleFromName(name)
+    if exists.klog("does it?") then
+      getVehicleFromName(name)
   }
 
 
@@ -59,7 +60,7 @@ ruleset manage_fleet {
       eci = meta:eci
   	}
 
-    if exists then
+    if exists.klog("maybe ") then
       send_directive("vehicle_ready")
         with name = name
 
