@@ -21,17 +21,21 @@ ruleset app_section_collection {
     showChildren = function() {
       wrangler:children()
     }
+
+    getSectionFromId = function(id){
+      ent:sections{[id]}
+    }
   }
 
   rule get_vehicle {
     select when section get_section
 
     pre {
-      section_id = event:attr("section_id")
-      exists = ent:sections >< section_id
+      section_id = event:attr("section_id").klog("id")
+      exists = ent:sections >< section_id.klog("exists")
     }
 
-    if exists then noop()
+    getSectionFromId(section_id)
   }
 
 
