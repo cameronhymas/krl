@@ -186,8 +186,13 @@ ruleset manage_fleet {
     }
 
     if otherStuff.klog("yessir")
-    then noop()
+    then 
+      noop()
 
+    fired {
+      ent:trips := ent:trips.defaultsTo({});
+      ent:trips{[sub_attrs{"subscription_name"}]} := otherStuff.pick("$.content")
+    }
   }
 
 
