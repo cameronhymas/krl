@@ -72,6 +72,11 @@ ruleset manage_fleet {
       event:send(
       { "eci": the_vehicle.eci, "eid": "install-ruleset",
         "domain": "pico", "type": "new_ruleset",
+        "attrs": { "base": meta:rulesetURI, "url": "vehicle.krl", "name": name } } )
+
+      event:send(
+      { "eci": the_vehicle.eci, "eid": "install-ruleset",
+        "domain": "pico", "type": "new_ruleset",
         "attrs": { "base": meta:rulesetURI, "url": "trip_store.krl", "name": name } } )
 
       event:send(
@@ -79,10 +84,9 @@ ruleset manage_fleet {
         "domain": "pico", "type": "new_ruleset",
         "attrs": { "base": meta:rulesetURI, "url": "track_trips2.krl", "name": name } } )
 
-      event:send(
-      { "eci": the_vehicle.eci, "eid": "install-ruleset",
-        "domain": "pico", "type": "new_ruleset",
-        "attrs": { "base": meta:rulesetURI, "url": "vehicle.krl", "name": name } } )
+      send_directive("maybe this worked")
+        with vehicle = the_vehicle.klog("vehicular stuff")
+
 
     fired {
       raise car event "subscribe_vehicle"
@@ -106,7 +110,7 @@ ruleset manage_fleet {
     event:send(
     { "eci": meta:eci, "eid": "subscription",
       "domain": "wrangler", "type": "subscription",
-      "attrs": { "name": "Suck It",
+      "attrs": { "name": vehicle.name,
                  "name_space": "car",
                  "my_role": "fleet",
                  "subscriber_role": "vehicle",
