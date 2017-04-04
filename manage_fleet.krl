@@ -35,11 +35,13 @@ ruleset manage_fleet {
     select when car get_vehicle
 
     pre {
-      name = event:attr("name")
+      name = event:attr("name").klog("name")
+      exists = ent:vehicles >< name.klog("exists")
     }
 
     getVehicleFromName(name)
   }
+
 
   rule get_vehicles {
     select when car get_vehicles
