@@ -172,6 +172,24 @@ ruleset manage_fleet {
   }
 
 
+
+  rule generate_report {
+    select when car get_report
+    foreach Subscriptions:getSubscriptions() setting (subscription)
+    pre {
+      sub_attrs = subscription{"attributes"}
+      stuff = event:send(
+        { "eci": sub_attrs{"outbound_eci"}, "eid": "trip_store",
+          "domain": "car", "type": "get_trips" } )
+    }
+
+    if stuff.klog("stuff oh yeah")
+    then noop()
+
+  }
+
+
+
   rule collection_empty {
     select when collection empty
     always {

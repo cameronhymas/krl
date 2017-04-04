@@ -29,6 +29,12 @@ ruleset trip_store {
     empty_trips = { }
   }
 
+  rule get_trips {
+    select when car get_trips
+
+    trips()
+  }
+
 
   rule clear_trips {
     select when car reset
