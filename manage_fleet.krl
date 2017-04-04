@@ -12,6 +12,7 @@ ruleset manage_fleet {
   global {
     __testing = { "queries": [ { "name": "__testing" } ],
                   "events": [ { "domain": "car", "type": "new_vehicle", "attrs": [ "name" ] },
+                              { "domain": "car", "type": "unneeded_vehicle", "attrs": [ "name" ] },
                               { "domain": "collection", "type": "empty" },
                               { "domain": "car", "type": "get_vehicles" } ] }
 
@@ -22,6 +23,10 @@ ruleset manage_fleet {
     getVehicles = function() {
       // return vehicle subscriptions
       Subscriptions:getSubscriptions()
+    }
+
+    getVehicleFromName = function(name){
+      ent:vehicles{[name]}
     }
   }
 
@@ -124,21 +129,27 @@ ruleset manage_fleet {
     pre {
       name = event:attrs("name")
       exists = ent:vehicles >< name
+      vehicle = getVehicleFromName(name)
       eci = meta:eci
-      child_to_delete = childFromName(name)
+      child_to_delete = getVehicleFromName(name)
     }
 
     if exists then
-    send_directive("vehicle_deleted")
-      with name = name
+      send_directive("vehicle_deleted")
+        with name = name
+        vehicle = vehicle
+
+      // delete subscription
+      event:send(
+      { "eci": vehicle.eci, "eid": "del",
+        "domain": "wrangler", "type": "subscription_cancellation",
+        "attrs": { "subscription_name": "car:" + name } } )
 
     fired {
       // remove pico
       raise pico event "delete_child_request"
         attributes child_to_delete;
-      ent:sections{[name]} := null
-
-      // delete subscription
+      ent:sections{[name]} := null     
     }
   }
 
