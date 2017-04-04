@@ -165,7 +165,8 @@ ruleset manage_fleet {
       // remove pico
       raise pico event "delete_child_request"
         attributes child_to_delete;
-      ent:sections{[name]} := null     
+
+      ent:sections{name} := null
     }
   }
 
