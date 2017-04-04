@@ -14,7 +14,8 @@ ruleset manage_fleet {
                   "events": [ { "domain": "car", "type": "new_vehicle", "attrs": [ "name" ] },
                               { "domain": "car", "type": "unneeded_vehicle", "attrs": [ "name" ] },
                               { "domain": "collection", "type": "empty" },
-                              { "domain": "car", "type": "get_vehicles" } ] }
+                              { "domain": "car", "type": "get_vehicles" },
+                              { "domain": "car", "type": "get_vehicle", "attrs": ["name"] } ] }
 
     nameFromName = function(name) {
       "Vehicle -  " + name + " Pico"
@@ -28,6 +29,16 @@ ruleset manage_fleet {
     getVehicleFromName = function(name){
       ent:vehicles{[name]}
     }
+  }
+
+  rule get_vehicle {
+    select when car get_vehicle
+
+    pre {
+      name = event:attr("name")
+    }
+
+    getVehicleFromName(name)
   }
 
   rule get_vehicles {
