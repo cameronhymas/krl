@@ -145,9 +145,9 @@ ruleset manage_fleet {
     pre {
       name = event:attr("name")
       exists = ent:vehicles >< name
-      vehicle = getVehicleFromName(name).klog("the vehicle is found: ")
+      //vehicle = getVehicleFromName(name).klog("the vehicle is found: ")
       eci = meta:eci
-      child_to_delete = getVehicleFromName(name)
+      child_to_delete = getVehicleFromName(name).klog("the vehicle to delete: ")
     }
 
     if exists.klog("existsings") then
