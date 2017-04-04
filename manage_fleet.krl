@@ -47,7 +47,8 @@ ruleset manage_fleet {
   rule get_vehicles {
     select when car get_vehicles
 
-    getVehicles()
+    //getVehicles()
+    Subscriptions:getSubscriptions()
   }
 
 
