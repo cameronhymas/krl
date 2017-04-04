@@ -180,8 +180,9 @@ ruleset manage_fleet {
     foreach Subscriptions:getSubscriptions() setting (subscription)
     pre {
       sub_attrs = subscription{"attributes"}
-      data = http:get("http://localhost:8080/sky/cloud/cj131xajv0015l40q1y79exr9/trip_store/trips"){[content]}.decode()
-      count = data.length()
+      url = http:get("http://localhost:8080/sky/cloud/cj131xajv0015l40q1y79exr9/trip_store/trips")
+      data = url{[content]}.decode()
+      //count = data.length()
     }
 
     if otherStuff.klog("yessir")
