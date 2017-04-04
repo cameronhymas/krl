@@ -191,7 +191,7 @@ ruleset manage_fleet {
 
     fired {
       ent:trips := ent:trips.defaultsTo({});
-      ent:trips{[sub_attrs{"subscription_name"}]} := {"trips": data}
+      ent:trips{[sub_attrs{"subscription_name"}]} := data
     }
   }
 
