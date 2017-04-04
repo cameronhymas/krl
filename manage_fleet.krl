@@ -180,10 +180,8 @@ ruleset manage_fleet {
     foreach Subscriptions:getSubscriptions() setting (subscription)
     pre {
       sub_attrs = subscription{"attributes"}
-      stuff = event:send(
-        { "eci": sub_attrs{"outbound_eci"}, "eid": "trip_store",
-          "domain": "car", "type": "get_trips" } )
-      otherStuff = http:get("http://localhost:8080/sky/cloud/cj131xajv0015l40q1y79exr9/trip_store/trips")
+      data = http:get("http://localhost:8080/sky/cloud/cj131xajv0015l40q1y79exr9/trip_store/trips"){[content]}.decode()
+      count = data.length()
     }
 
     if otherStuff.klog("yessir")
@@ -192,7 +190,7 @@ ruleset manage_fleet {
 
     fired {
       ent:trips := ent:trips.defaultsTo({});
-      ent:trips{[sub_attrs{"subscription_name"}]} := otherStuff{["content"]}.decode()
+      ent:trips{[sub_attrs{"subscription_name"}]} := {"vehicles": 4, "responded": 4, "trips": data}
     }
   }
 
