@@ -95,7 +95,8 @@ ruleset manage_fleet {
 
     fired {
       raise car event "subscribe_vehicle"
-        with vehicle = the_vehicle;
+        with vehicle = the_vehicle
+        name = name;
 
       ent:vehicles := ent:vehicles.defaultsTo({});
       ent:vehicles{[name]} := the_vehicle
@@ -107,6 +108,7 @@ ruleset manage_fleet {
     select when car subscribe_vehicle
     pre {
       vehicle = event:attr("vehicle").klog("Vehicle: ")
+      name = event:attr("name").klog("Vehcile Name: ")
     }
 
     send_directive("subscribe time")
@@ -115,7 +117,7 @@ ruleset manage_fleet {
     event:send(
     { "eci": meta:eci, "eid": "subscription",
       "domain": "wrangler", "type": "subscription",
-      "attrs": { "name": vehicle.name,
+      "attrs": { "name": name,
                  "name_space": "car",
                  "my_role": "fleet",
                  "subscriber_role": "vehicle",
