@@ -136,7 +136,7 @@ ruleset manage_fleet {
       child_to_delete = getVehicleFromName(name)
     }
 
-    if exists then
+    if exists.klog() then
       send_directive("vehicle_deleted")
         with name = name
         vehicle = vehicle
