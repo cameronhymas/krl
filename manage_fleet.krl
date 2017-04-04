@@ -14,6 +14,7 @@ ruleset manage_fleet {
                   "events": [ { "domain": "car", "type": "new_vehicle", "attrs": [ "name" ] },
                               { "domain": "car", "type": "unneeded_vehicle", "attrs": [ "name" ] },
                               { "domain": "collection", "type": "empty" },
+                              { "domain": "car", "type": "empty_trips" },
                               { "domain": "car", "type": "get_vehicles" },
                               { "domain": "car", "type": "get_report" },
                               { "domain": "car", "type": "get_vehicle", "attrs": ["name"] } ] }
@@ -191,7 +192,16 @@ ruleset manage_fleet {
 
     fired {
       ent:trips := ent:trips.defaultsTo({});
-      ent:trips{[sub_attrs{"subscription_name"}]} := otherStuff{["content"]}
+      ent:trips{[sub_attrs{"subscription_name"}]} := otherStuff{["content"]}.decode()
+    }
+  }
+
+
+  rule empty_trips{
+    select when car empty_trips
+
+    always {
+      ent:trips := {}
     }
   }
 
