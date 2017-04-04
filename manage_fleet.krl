@@ -129,8 +129,8 @@ ruleset manage_fleet {
     select when car unneeded_vehicle
 
     pre {
-      name = event:attrs("name")
-      exists = ent:vehicles >< name
+      name = event:attrs("name").klog("name here: ")
+      exists = ent:vehicles >< name.klog("stuff goes here: ")
       vehicle = getVehicleFromName(name)
       eci = meta:eci
       child_to_delete = getVehicleFromName(name)
