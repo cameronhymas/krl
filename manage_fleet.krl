@@ -182,9 +182,10 @@ ruleset manage_fleet {
       stuff = event:send(
         { "eci": sub_attrs{"outbound_eci"}, "eid": "trip_store",
           "domain": "car", "type": "get_trips" } )
+      otherStuff = http:get("http://localhost:8080/sky/cloud/cj131xajv0015l40q1y79exr9/trip_store/trips")
     }
 
-    if stuff.klog("stuff oh yeah")
+    if otherStuff.klog("yessir")
     then noop()
 
   }
