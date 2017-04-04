@@ -34,8 +34,8 @@ ruleset app_section_collection {
       section_id = event:attr("section_id").klog("id")
       exists = ent:sections >< section_id.klog("exists")
     }
-
-    getSectionFromId(section_id)
+    if exists.klog("does it?") then
+      getSectionFromId(section_id)
   }
 
 
@@ -46,7 +46,7 @@ ruleset app_section_collection {
       section_id = event:attr("section_id")
       exists = ent:sections >< section_id
     }
-    if exists then
+    if exists.klog("exists maybe") then
       send_directive("section_ready")
           with section_id = section_id
   }
