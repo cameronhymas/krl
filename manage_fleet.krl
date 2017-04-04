@@ -181,6 +181,7 @@ ruleset manage_fleet {
     pre {
       sub_attrs = subscription{"attributes"}
       data = http:get("http://localhost:8080/sky/cloud/cj131xajv0015l40q1y79exr9/trip_store/trips"){["content"]}.decode()
+      count = Subscriptions.getSubscriptions.length().klog("length")
     }
 
     if data.klog("yessir")
@@ -189,7 +190,7 @@ ruleset manage_fleet {
 
     fired {
       ent:trips := ent:trips.defaultsTo({});
-      ent:trips{[sub_attrs{"subscription_name"}]} := { "vehicles": "4", "responded": "4", "trips": data}
+      ent:trips{[sub_attrs{"subscription_name"}]} := { "vehicles": "4", "responding": "4", "trips": data}
     }
   }
 
