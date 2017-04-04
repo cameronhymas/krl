@@ -15,6 +15,7 @@ ruleset manage_fleet {
                               { "domain": "car", "type": "unneeded_vehicle", "attrs": [ "name" ] },
                               { "domain": "collection", "type": "empty" },
                               { "domain": "car", "type": "get_vehicles" },
+                              { "domain": "car", "type": "get_report" },
                               { "domain": "car", "type": "get_vehicle", "attrs": ["name"] } ] }
 
     nameFromName = function(name) {
