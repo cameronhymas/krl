@@ -234,7 +234,7 @@ ruleset manage_fleet {
       role = sub_attrs{"subscriber_role"}.klog("subscriber_role")
     }
 
-    if (role eq "vehicle").klog("equals?") then 
+    if (role neq "fleet").klog("equals?") then 
       event:send(
         { "eci": sub_eci, "eid": "gather_trip_data",
           "domain": "car", "type": "gather_trip_data",
