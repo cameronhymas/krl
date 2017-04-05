@@ -49,9 +49,9 @@ ruleset track_trips2 {
 
     pre {
       name = event:attrs("name").klog("name in track_trips gather_trip_data: ")
-      rcn = event:attrs("rcn").klog("rcn in track_trips gather_trip_data: ")
-      reply_to_eci = event:attrs("eci").klog("eci in track_trips gather_trip_data: ")
-      trips = http:get("http://localhost:8080/sky/cloud/" + meta:eci + "/trip_store/trips"){["content"]}.decode().klog("trips in track_trips gather_trip_data: ")
+      rcn = event:attrs("rcn")
+      reply_to_eci = event:attrs("eci")
+      trips = http:get("http://localhost:8080/sky/cloud/" + meta:eci + "/trip_store/trips"){["content"]}.decode()
     }
 
     event:send(
@@ -59,7 +59,7 @@ ruleset track_trips2 {
         "domain": "car", "type": "gather_report",
         "attrs": { "name": name,
                    "rcn": rcn,
-                   "trips": trips } } )
+                   "trips": trips.klog("gather_trip_data trips: ") } } )
   }
 }
 
