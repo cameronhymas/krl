@@ -14,7 +14,7 @@ ruleset manage_fleet {
                   "events": [ { "domain": "car", "type": "new_vehicle", "attrs": [ "name" ] },
                               { "domain": "car", "type": "unneeded_vehicle", "attrs": [ "name" ] },
                               { "domain": "collection", "type": "empty" },
-                              { "domain": "car", "type": "empty_trips" },
+                              { "domain": "car", "type": "clear_report" },
                               { "domain": "car", "type": "get_vehicles" },
                               { "domain": "car", "type": "get_report" },
                               { "domain": "car", "type": "get_vehicle", "attrs": ["name"] } ] }
@@ -180,26 +180,30 @@ ruleset manage_fleet {
     foreach Subscriptions:getSubscriptions() setting (subscription)
     pre {
       sub_attrs = subscription{"attributes"}
-      data = http:get("http://localhost:8080/sky/cloud/cj131xajv0015l40q1y79exr9/trip_store/trips"){["content"]}.decode()
-      count = Subscriptions:getSubscriptions().length().klog("length")
+      data = http:get("http://localhost:8080/sky/cloud/" + sub_attrs{"outbound_eci"} + "/trip_store/trips"){["content"]}.decode()
+      length = Subscriptions:getSubscriptions().length().klog("length")
     }
 
-    if data.klog("yessir")
+    if data
     then 
       noop()
 
     fired {
-      ent:trips := ent:trips.defaultsTo({});
-      ent:trips{[sub_attrs{"subscription_name"}]} := { "vehicles": "4", "responding": "4", "trips": data}
+      ent:count := ent:count.defaultsTo(1);
+      ent:count := ent:count + 1;
+
+      ent:report := ent:report.defaultsTo({});
+      ent:report{[sub_attrs{"subscription_name"}]} := { "vehicles": length, "responding": ent:count, "trips": data}
     }
   }
 
 
-  rule empty_trips{
-    select when car empty_trips
+  rule clear_report{
+    select when car clear_report
 
     always {
-      ent:trips := {}
+      ent:report := {};
+      ent:count := null
     }
   }
 
