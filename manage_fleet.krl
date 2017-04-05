@@ -254,9 +254,9 @@ ruleset manage_fleet {
   rule gather_report {
     select when car gather_report 
     pre {
-      name = event:attr("name")
-      rcn = event:attr("rcn")
-      trips = event:attr("trips")
+      name = event:attr("name").klog("gathering now - name: ")
+      rcn = event:attr("rcn").klog("gathering now - rcn: ")
+      trips = event:attr("trips").klog("gathering now - trips: ")
       vehicleCount = Subscriptions:getSubscriptions().length().klog("vehicleCount: ")
       currentCount = ent:sg_trips{[rcn]}.length().klog("currentCount: ")
     }
