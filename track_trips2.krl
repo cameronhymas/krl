@@ -52,6 +52,7 @@ ruleset track_trips2 {
       rcn = event:attrs("rcn")
       reply_to_eci = event:attrs("eci")
       trips = http:get("http://localhost:8080/sky/cloud/" + meta:eci + "/trip_store/trips"){["content"]}.decode()
+      otherTrips = trips.klog("TRIPS: ")
     }
 
     event:send(
