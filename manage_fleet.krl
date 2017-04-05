@@ -189,11 +189,11 @@ ruleset manage_fleet {
       noop()
 
     fired {
-      ent:count := ent:count.defaultsTo(1);
+      ent:count := ent:count.defaultsTo(1).klog("default");
       ent:count := ent:count + 1;
 
       ent:report := ent:report.defaultsTo({});
-      ent:report{[sub_attrs{"subscription_name"}]} := { "vehicles": length, "responding": ent:count, "trips": data}
+      ent:report{[sub_attrs{"subscription_name"}]} := { "vehicles": length, "responding": ent:count.klog("count"), "trips": data}
     }
   }
 
@@ -203,6 +203,7 @@ ruleset manage_fleet {
 
     always {
       ent:report := {};
+      ent:trips := {};
       ent:count := null
     }
   }
