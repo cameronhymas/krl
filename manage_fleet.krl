@@ -234,13 +234,13 @@ ruleset manage_fleet {
       role = sub_attrs{"subscriber_role"}.klog("subscriber_role")
     }
 
-    if (role neq "fleet").klog("equals?") then 
-      event:send(
-        { "eci": sub_eci, "eid": "gather_trip_data",
-          "domain": "car", "type": "gather_trip_data",
-          "attrs": { "name": sub_attrs{"subscription_name"},
-                     "rcn": rcn.klog("rcn"),
-                     "eci": meta:eci } } )
+    //if (role neq "fleet").klog("equals?") then 
+    event:send(
+      { "eci": sub_eci, "eid": "gather_trip_data",
+        "domain": "car", "type": "gather_trip_data",
+        "attrs": { "name": sub_attrs{"subscription_name"},
+                   "rcn": rcn.klog("rcn"),
+                   "eci": meta:eci } } )
 
      fired {
       ent:sg_trips := ent:sg_trips.defaultsTo({});
