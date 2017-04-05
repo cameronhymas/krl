@@ -230,7 +230,7 @@ ruleset manage_fleet {
     pre {
       sub_attrs = subscription{"attributes"}.klog("attrs")
       sub_eci = sub_attrs{"subscriber_eci"}.klog("eci")
-      rcn = "rcn" + ent:id
+      rcn = "rcn 0"
     }
 
     if (sub_attrs{"subscriber_role"}.klog("subscriber_role") eq "vehicle").klog("equals?") then 
