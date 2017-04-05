@@ -189,7 +189,7 @@ ruleset manage_fleet {
       noop()
 
     fired {
-      ent:count := ent:count.defaultsTo(1).klog("default");
+      ent:count := ent:count.defaultsTo(0).klog("default");
       ent:count := ent:count + 1;
 
       ent:report := ent:report.defaultsTo({});
