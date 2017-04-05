@@ -17,6 +17,9 @@ ruleset manage_fleet {
                               { "domain": "car", "type": "clear_report" },
                               { "domain": "car", "type": "get_vehicles" },
                               { "domain": "car", "type": "get_report" },
+
+                              { "domain": "car", "type": "scatter_report" },
+
                               { "domain": "car", "type": "get_vehicle", "attrs": ["name"] } ] }
 
     nameFromName = function(name) {
@@ -204,6 +207,7 @@ ruleset manage_fleet {
     always {
       ent:report := {};
       ent:trips := {};
+      ent:sg_trips := {};
       ent:count := null
     }
   }
@@ -214,6 +218,52 @@ ruleset manage_fleet {
     select when collection empty
     always {
       ent:vehicles := {}
+    }
+  }
+
+
+
+  rule scatter_report {
+    select when car scatter_report
+
+    foreach Subscriptions:getSubscriptions() setting (subscription)
+    pre {
+      sub_attrs = subscription{"attributes"}
+      sub_eci = sub_attrs{"subscriber_eci"}
+      rcn = "rcn" + ent:id
+    }
+
+    if (sub_attrs{"subscriber_role"}.klog("subscriber_role") eq "vehicle") then 
+      event:send(
+        { "eci": sub_eci, "eid": "gather_trip_data",
+          "domain": "car", "type": "gather_trip_data",
+          "attrs": { "name": sub_attrs{"subscription_name"},
+                     "rcn": rcn,
+                     "eci": meta:eci } } )
+
+     fired {
+      ent:sg_trips := ent:sg_trips.defaultsTo({});
+      ent:sg_trips{[rcn]} = {};
+
+      ent:id := ent:id.defaultsTo(0)
+      //ent:id := ent:id + 1;
+    }
+  }
+
+  rule gather_report {
+    select when car gather_report 
+    pre {
+      name = event:attr("name")
+      rcn = event:attr("rcn")
+      trips = event:attr("trips")
+      vehicleCount = Subscriptions:getSubscriptions().length().klog("vehicleCount: ")
+      currentCount = ent:sg_trips{[rcn]}.length().klog("currentCount: ")
+    }
+
+    always {
+      ent:sg_trips{[rcn][name]} := {"vehicles": vehicleCount, "responding": currentCount, "trips": trips};
+
+      ent:id := ent:id + 1
     }
   }
 }

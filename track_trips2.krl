@@ -42,4 +42,26 @@ ruleset track_trips2 {
       if(mileage > long_trip)        
     }
   }
+
+
+  rule gather_trip_data{
+    select when car gather_trip_data
+
+    pre {
+      name = event:attrs("name").klog("name in track_trips gather_trip_data: ")
+      rcn = event:attrs("rcn").klog("rcn in track_trips gather_trip_data: ")
+      reply_to_eci = event:attrs("eci").klog("eci in track_trips gather_trip_data: ")
+      trips = http:get("http://localhost:8080/sky/cloud/" + meta:eci + "/trip_store/trips"){["content"]}.decode().klog("trips in track_trips gather_trip_data: ")
+    }
+
+    event:send(
+      { "eci": reply_to_eci, "eid": "gather_report",
+        "domain": "car", "type": "gather_report",
+        "attrs": { "name": name,
+                   "rcn": rcn,
+                   "trips": trips } } )
+  }
 }
+
+
+
