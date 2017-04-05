@@ -228,17 +228,17 @@ ruleset manage_fleet {
 
     foreach Subscriptions:getSubscriptions() setting (subscription)
     pre {
-      sub_attrs = subscription{"attributes"}
-      sub_eci = sub_attrs{"subscriber_eci"}
+      sub_attrs = subscription{"attributes"}.klog("attrs")
+      sub_eci = sub_attrs{"subscriber_eci"}.klog("eci")
       rcn = "rcn" + ent:id
     }
 
-    if (sub_attrs{"subscriber_role"}.klog("subscriber_role") eq "vehicle") then 
+    if (sub_attrs{"subscriber_role"}.klog("subscriber_role") eq "vehicle").klog("equals?") then 
       event:send(
         { "eci": sub_eci, "eid": "gather_trip_data",
           "domain": "car", "type": "gather_trip_data",
           "attrs": { "name": sub_attrs{"subscription_name"},
-                     "rcn": rcn,
+                     "rcn": rcn.klog("rcn"),
                      "eci": meta:eci } } )
 
      fired {
