@@ -258,11 +258,11 @@ ruleset manage_fleet {
       rcn = event:attr("rcn").klog("gathering now - rcn: ")
       trips = event:attr("trips").klog("gathering now - trips: ")
       vehicleCount = Subscriptions:getSubscriptions().length().klog("vehicleCount: ")
-      currentCount = ent:sg_trips{[rcn]}.length().klog("currentCount: ")
+      currentCount = ent:sg_trips{[rcn]}.length() + 1.klog("currentCount: ")
     }
 
     always {
-      ent:sg_trips{[rcn][name]} := {"vehicles": vehicleCount, "responding": currentCount, "trips": trips}
+      ent:sg_trips{[rcn]{[name]}} := {"vehicles": vehicleCount, "responding": currentCount, "trips": trips}
 
       //ent:id := ent:id + 1
     }
