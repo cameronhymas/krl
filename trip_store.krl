@@ -82,10 +82,10 @@ ruleset trip_store {
     select when car gather_trip_data
 
     pre {
-      attrs = event:attrs()
-      name = attrs{"name"}
-      rcn = attrs{"rcn"}
-      reply_to_eci = attrs{"eci"}
+      attrs = event:attrs().klog("attributes found")
+      name = attrs{"name"}.klog("name is finally here")
+      rcn = attrs{"rcn"}.klog("This is the RCN")
+      reply_to_eci = attrs{"eci"}.klog("AND finally the ECI")
       trips = trips()
     }
 
