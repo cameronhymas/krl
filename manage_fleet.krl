@@ -238,9 +238,9 @@ ruleset manage_fleet {
     event:send(
       { "eci": sub_eci, "eid": "gather_trip_data",
         "domain": "car", "type": "gather_trip_data",
-        "attrs": { "name": "Temporary" } } )
-                   //"rcn": rcn.klog("rcn"),
-                   //"eci": meta:eci } } )
+        "attrs": { "name": sub_attrs{"subscription_name"},
+                   "rcn": rcn.klog("rcn"),
+                   "eci": meta:eci } } )
 
      fired {
       ent:sg_trips := ent:sg_trips.defaultsTo({});
