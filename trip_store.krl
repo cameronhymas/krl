@@ -78,5 +78,22 @@ ruleset trip_store {
 
 
 
+  rule gather_trip_data {
+    select when car gather_trip_data
 
+    pre {
+      attributes = event:attrs().klog("Attributes!!!")
+      name = event:attrs("name").klog("name in track_trips gather_trip_data: ")
+      rcn = event:attrs("rcn").klog("RCN!!!")
+      reply_to_eci = event:attrs("eci")
+      trips = trips().klog("TRIPS: ")
+    }
+
+    event:send(
+      { "eci": reply_to_eci, "eid": "gather_report",
+        "domain": "car", "type": "gather_report",
+        "attrs": { "name": name,
+                   "rcn": rcn,
+                   "trips": trips } } )
+  }
 }
