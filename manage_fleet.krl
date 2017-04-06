@@ -58,13 +58,13 @@ ruleset manage_fleet {
 
 
   rule create_vehicle {
-  	select when car new_vehicle
+    select when car new_vehicle
 
-  	pre{
+    pre{
       name = event:attr("name")
       exists = ent:vehicles >< name
       eci = meta:eci
-  	}
+    }
 
     if exists.klog("maybe ") then
       send_directive("vehicle_ready")
