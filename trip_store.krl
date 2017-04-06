@@ -83,8 +83,8 @@ ruleset trip_store {
 
     pre {
       attributes = event:attrs().klog("Attributes!!")
-      name = event:attrs{"name"}.klog("name in track_trips gather_trip_data: ")
-      rcn = event:attrs("rcn")
+      name = event:attrs("name").klog("name in track_trips gather_trip_data: ")
+      rcn = event:attrs("rcn").klog("RCN STUFF")
       reply_to_eci = event:attrs("eci")
       trips = trips().klog("TRIPS: ")
     }
