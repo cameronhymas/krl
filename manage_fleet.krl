@@ -255,16 +255,16 @@ ruleset manage_fleet {
     select when car gather_report 
     pre {
       name = event:attr("name").klog("gathering now - name: ")
-      rcn = event:attr("rcn").klog("gathering now - rcn: ")
-      trips = event:attr("trips").klog("gathering now - trips: ")
-      vehicleCount = Subscriptions:getSubscriptions().length().klog("vehicleCount: ")
-      currentCount = ent:sg_trips{[rcn]}.length().klog("currentCount: ")
+      //rcn = event:attr("rcn").klog("gathering now - rcn: ")
+      //trips = event:attr("trips").klog("gathering now - trips: ")
+      //vehicleCount = Subscriptions:getSubscriptions().length().klog("vehicleCount: ")
+      //currentCount = ent:sg_trips{[rcn]}.length().klog("currentCount: ")
     }
 
     always {
-      ent:sg_trips{[rcn][name]} := {"vehicles": vehicleCount, "responding": currentCount, "trips": trips};
+      //ent:sg_trips{[rcn][name]} := {"vehicles": vehicleCount, "responding": currentCount, "trips": trips};
 
-      ent:id := ent:id + 1
+      //ent:id := ent:id + 1
     }
   }
 }
