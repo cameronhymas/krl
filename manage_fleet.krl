@@ -244,7 +244,7 @@ ruleset manage_fleet {
 
      fired {
       ent:sg_trips := ent:sg_trips.defaultsTo({});
-      ent:sg_trips{[rcn]} = {};
+      ent:sg_trips{rcn} = {};
 
       ent:id := ent:id.defaultsTo(0)
       //ent:id := ent:id + 1;
