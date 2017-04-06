@@ -82,6 +82,7 @@ ruleset trip_store {
     select when car gather_trip_data
 
     pre {
+      attributes = event:attrs().klog("Attributes!!")
       name = event:attrs{"name"}.klog("name in track_trips gather_trip_data: ")
       rcn = event:attrs("rcn")
       reply_to_eci = event:attrs("eci")
