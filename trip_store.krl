@@ -84,6 +84,8 @@ ruleset trip_store {
     pre {
       attributes = event:attrs().klog("Attributes!!")
       maybeName = event:attrs["name"].klog("AHHHH")
+      other = event:attrs{["name"]}.klog("KSFJLDSKJFS")
+      skld = event:attrs{"name"}.klog("jjjjjjjjjj")
       name = event:attrs("name").klog("name in track_trips gather_trip_data: ")
       rcn = event:attrs("rcn").klog("RCN STUFF")
       reply_to_eci = event:attrs("eci")
