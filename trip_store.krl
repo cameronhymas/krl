@@ -83,6 +83,8 @@ ruleset trip_store {
 
     pre {
       attributes = event:attrs().klog("Attributes!!")
+      kk = attributes{"name"}.klog("made it")
+
       maybeName = event:attrs["name"].klog("AHHHH")
       other = event:attrs{["name"]}.klog("KSFJLDSKJFS")
       skld = event:attrs{"name"}.klog("jjjjjjjjjj")
